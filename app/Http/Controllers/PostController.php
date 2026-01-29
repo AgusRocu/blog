@@ -9,6 +9,9 @@ use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth')->except(['index','show']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -17,7 +20,6 @@ class PostController extends Controller
         $posts = Post::orderBy('titulo', 'asc')->paginate(5);
         return view('posts.index', compact('posts'));
     }
-
     /**
      * Show the form for creating a new resource.
      */

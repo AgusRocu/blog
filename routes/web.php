@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\LoginController;
 
 Route::get('/', function () {
     return view('inicio');
@@ -29,5 +30,11 @@ Route::resource('posts', PostController::class)
 -> only(['index', 'show', 'create', 'edit', 'destroy','store','update'])
 ->parameters(['posts' => 'id'])   // renombramos {post} a {id}
 ->where(['id' => '[0-9]+']);      // validacion
+
+Route::get('auth/login', [LoginController::class, 'loginForm'])->name('auth.login');
+Route::post('login', [LoginController::class, 'login'])->name('login');
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
 
 
