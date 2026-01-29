@@ -26,7 +26,7 @@ Route::get('/posts/nuevoPrueba', [PostController::class, 'nuevoPrueba']);
 Route::get('/posts/editPrueba/{id}', [PostController::class, 'editPrueba']);
 
 Route::resource('posts', PostController::class)
--> only(['index', 'show', 'create', 'edit', 'destroy'])
+-> only(['index', 'show', 'create', 'edit', 'destroy','store','update'])
 ->parameters(['posts' => 'id'])   // renombramos {post} a {id}
 ->where(['id' => '[0-9]+']);      // validacion
 

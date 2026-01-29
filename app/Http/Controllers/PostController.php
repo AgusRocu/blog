@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -22,16 +24,23 @@ class PostController extends Controller
     public function create()
     {
         /* return view('posts.create'); */
-        return redirect()->route('inicio')
-                     ->with('mensaje', 'Temporalmente no funciona el create :)');
+        return view('posts.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        $user = User::first();
+
+        Post::create([
+            'titulo' => $request->titulo,
+            'contenido' => $request->contenido,
+            'user_id' => $user->id
+        ]);
+
+        return redirect()->route('posts.index')->with('mensaje_ok', 'Post creado correctamente :)');
     }
 
     /**
@@ -46,20 +55,24 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        /* return view('posts.edit',compact('id')); */
-
-        return redirect()->route('inicio')
-                     ->with('mensaje', 'Temporalmente no funciona el edit :)');
+        $post = Post::findOrFail($id);
+        return view('posts.edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PostRequest $request, $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->update([
+            'titulo'=> $request->titulo,
+            'contenido'=> $request->contenido,
+        ]);
+
+        return redirect()->route('posts.index')->with('mensaje_ok', 'Modificado correctamente :)');
     }
 
     /**
